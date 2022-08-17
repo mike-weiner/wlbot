@@ -1,0 +1,22 @@
+{
+  "name": "wlbot",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A CLI for the WeatherLink Live API.",
+  "main": "index.js",
+  "bin": {
+    "wlbot": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Michael Weiner",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "chalk": "^5.0.1",
+    "commander": "^9.4.0",
+    "ora": "^6.1.2"
+  }
+}
