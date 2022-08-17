@@ -9,7 +9,7 @@ import stations from './commands/stations.js';
 
 program.description("A CLI for the WeatherLink Live API.")
       .name("wlbot")
-      .version('1.0.0')
+      .version('1.0.1')
       .usage('<command>');
 
 program.command("mine")
