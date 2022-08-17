@@ -12,7 +12,7 @@ export default (options) => {
 
   axios.get(
       buildWeatherLinkApiUrl(
-        'stations/', 
+        'stations', 
         {"api-key": API_KEY, "t": String(Math.round(Date.now() / 1000))}, 
         {"api-key": API_KEY, "t": String(Math.round(Date.now() / 1000))}
       )

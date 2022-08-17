@@ -8,15 +8,17 @@
     "wlbot": "index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "Michael Weiner",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
+    "chai": "^4.3.6",
     "chalk": "^5.0.1",
     "commander": "^9.4.0",
+    "mocha": "^10.0.0",
     "ora": "^6.1.2"
   }
 }
