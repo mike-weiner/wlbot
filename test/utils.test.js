@@ -1,4 +1,4 @@
-import { buildWeatherLinkApiUrl } from '../lib/utils.js';
+import { buildWeatherLinkApiUrl, dateRangeIsValid } from '../lib/utils.js';
 import chai from 'chai';
 
 describe('buildWeatherLinkApiUrl', () => {
@@ -37,5 +37,50 @@ describe('buildWeatherLinkApiUrl', () => {
         {'api-key': process.env.WEATHER_LINK_API_KEY, 't': String(1660759608)}
       )
     ).to.equal('https://api.weatherlink.com/v2/stations/13,14,15?api-key=sampleKey&t=1660759608&api-signature=7accbcf70808449f944e5da9e3e06db0aae7362870e7ace8312d5d9e8103d274')
+  });
+});
+
+describe('dateRangeIsValid', () => {
+
+  it('Start Timestamp is Before End Timestamp', () => {
+    chai.expect(
+      dateRangeIsValid(1673472399, 1673494000).isValid
+    ).to.equal(true)
+  });
+
+  it('Start Timestamp is the Same as End Timestamp', () => {
+    chai.expect(
+      dateRangeIsValid(1673494000, 1673494000).isValid
+    ).to.equal(false)
+  });
+
+  it('Start Timestamp is After End Timestamp', () => {
+    chai.expect(
+      dateRangeIsValid(1673494010, 1673494000).isValid
+    ).to.equal(false)
+  });
+
+  it('Start Timestamp is 0', () => {
+    chai.expect(
+      dateRangeIsValid(0, 1673494000).isValid
+    ).to.equal(false)
+  });
+
+  it('Start Timestamp is Negative', () => {
+    chai.expect(
+      dateRangeIsValid(-10, 1673494000).isValid
+    ).to.equal(false)
+  });
+
+  it('End Timestamp is 0', () => {
+    chai.expect(
+      dateRangeIsValid(1673494010, 0).isValid
+    ).to.equal(false)
+  });
+
+  it('End Timestamp is Negative', () => {
+    chai.expect(
+      dateRangeIsValid(1673494010, -10).isValid
+    ).to.equal(false)
   });
 });
