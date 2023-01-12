@@ -3,6 +3,7 @@
 import { Command, Argument } from 'commander';
 const program = new Command();
 
+import catalog from './commands/catalog.js';
 import current from './commands/current.js';
 import mine from './commands/mine.js';
 import stations from './commands/stations.js';
@@ -12,6 +13,17 @@ program.description("A CLI for the WeatherLink Live API.")
       .name("wlbot")
       .version('1.0.1')
       .usage('<command>');
+
+program.command("catalog")
+      .description("Get a catalog of all available sensor types and the data reported by each sensor.")
+      .option("-r, --raw", "Display the raw response from the WeatherLink API.")
+      .action(catalog);
+
+program.command("current")
+      .description("Get the current weather data for 1 weather station associated with your WeatherLink API Key.")
+      .argument('<station-id>', 'The Station ID of the weather station that you want current weather data for.')
+      .option("-r, --raw", "Display the raw response from the WeatherLink API.")
+      .action(current);
 
 program.command("mine")
       .description("Returns an array of Weather Station Id(s) that are associated with your WeatherLink API Key.")
@@ -23,12 +35,6 @@ program.command("stations")
       .argument('<station-ids>', 'A comma-separated list of Weather Station Id(s) that you want information about.')
       .option("-r, --raw", "Display the raw response from the WeatherLink API.")
       .action(stations);
-
-program.command("current")
-      .description("Get the current weather data for 1 weather station associated with your WeatherLink API Key.")
-      .argument('<station-id>', 'The Station ID of the weather station that you want current weather data for.')
-      .option("-r, --raw", "Display the raw response from the WeatherLink API.")
-      .action(current);
 
 program.command("status")
       .description("Retrieves the operational status(es) of Davis Instrument's services.")
