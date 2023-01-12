@@ -5,6 +5,7 @@ const program = new Command();
 
 import catalog from './commands/catalog.js';
 import current from './commands/current.js';
+import historic from './commands/historic.js';
 import mine from './commands/mine.js';
 import stations from './commands/stations.js';
 import status from './commands/status.js'
@@ -24,6 +25,14 @@ program.command("current")
       .argument('<station-id>', 'The Station ID of the weather station that you want current weather data for.')
       .option("-r, --raw", "Display the raw response from the WeatherLink API.")
       .action(current);
+
+program.command("historic")
+      .description("Get the historical weather data for 1 weather station associated with your WeatherLink API Key within a given time range.")
+      .argument('<station-id>', 'The Station ID of the weather station that you want current weather data for.')
+      .argument('<start-timestamp>', 'A Unix timestamp marking the beginning of the historical period (must be earlier than end-timestamp but not more than 24 hours earlier).')
+      .argument('<end-timestamp>', 'A Unix timestamp marking the end of the historical period (must be later than start-timestamp but not more than 24 hours later).')
+      .option("-r, --raw", "Display the raw response from the WeatherLink API.")
+      .action(historic);
 
 program.command("mine")
       .description("Returns an array of Weather Station Id(s) that are associated with your WeatherLink API Key.")

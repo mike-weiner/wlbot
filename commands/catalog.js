@@ -8,7 +8,7 @@ const log = console.log;
 
 export default (options) => {
   const API_KEY = process.env.WEATHER_LINK_API_KEY;
-  const spinner = !options.raw ? ora('Requesting Catalog').start() : undefined;
+  const spinner = !options.raw ? ora('Retrieving Sensor Catalog').start() : undefined;
 
   axios.get(
       buildWeatherLinkApiUrl(

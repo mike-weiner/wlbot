@@ -8,7 +8,7 @@ const log = console.log;
 
 export default (stationId, options) => {
   const API_KEY = process.env.WEATHER_LINK_API_KEY;
-  const spinner = !options.raw ? ora('Searching for Stations').start() : undefined;
+  const spinner = !options.raw ? ora('Retrieving Current Weather Data').start() : undefined;
 
   axios.get(
       buildWeatherLinkApiUrl(
