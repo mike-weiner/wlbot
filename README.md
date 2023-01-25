@@ -66,7 +66,7 @@ This project requires several environmental variables to be set. Before running 
 
 To set your environment variables on macOS or a Linux distribution, you will need to add the following env. variables that are listed below to either your `.bash_profile` or `.zshrc` file. 
 
-This article describes how you can (set environment variables on Windows Operating Systems)[https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1].
+This article describes how you can [set environment variables on Windows Operating Systems](https://www3.ntu.edu.sg/home/ehchua/programming/howto/Environment_Variables.html#zz-2.).
 
 ### Installing CLI Globally
 Once you have all of the environment variables required by the CLI set, we need to globally install the CLI in npm. This will allow you to call `wlbot` on your command line without being in this project's directory.
