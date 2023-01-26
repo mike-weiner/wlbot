@@ -54,7 +54,7 @@ Navigate to the location on your development machine where you want to place thi
     npm install
 
 ### Setting Environmental Variables Required by the Project
-This project requires several environmental variables to be set. Before running the CLI locally for this first time, you must set the necessary environment variables. The table below specifies the name and value of the environment variables that are required.
+This project requires several **permanent** environmental variables to be set. Before running the CLI locally for this first time, you must set the necessary environment variables. The table below specifies the name and value of the environment variables that are required.
 
 | Environment Variable Name   | Environment Variable Value        |
 | ----------------------------| --------------------------------- |
@@ -64,9 +64,16 @@ This project requires several environmental variables to be set. Before running 
 
 **Note:** `<your_api_key>` and `<your_api_secret>` should be replaced with the API Key and API Secret that you where given when creating your WeatherLink API as described above.
 
-To set your environment variables on macOS or a Linux distribution, you will need to add the following env. variables that are listed below to either your `.bash_profile` or `.zshrc` file. 
+This article describes how you can [set permanent environment variables on macos or Linux](https://apple.stackexchange.com/questions/356441/how-to-add-permanent-environment-variable-in-zsh).
 
-This article describes how you can [set environment variables on Windows Operating Systems](https://www3.ntu.edu.sg/home/ehchua/programming/howto/Environment_Variables.html#zz-2.).
+This article describes how you can [set permanent environment variables on Windows Operating Systems](https://www3.ntu.edu.sg/home/ehchua/programming/howto/Environment_Variables.html#zz-2.).
+
+Once you have your environment variables set, you can double check that they have been permanently set by doing the following:
+1. Open a new terminal window or tab. 
+2. In that new terminal session, enter `node` and press Enter. This will open Node.js's virtual environment.
+3. Enter `process.env.WEATHER_LINK_API_KEY` and press Enter.
+5. Your Weather Link API key should be displayed on the screen. This means that you environment variable has been set properly.
+6. Repeat steps 1-5 for the other two environment variables.
 
 ### Installing CLI Globally
 Once you have all of the environment variables required by the CLI set, we need to globally install the CLI in npm. This will allow you to call `wlbot` on your command line without being in this project's directory.
