@@ -1,24 +1,50 @@
 {
   "name": "wlbot",
-  "type": "module",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A CLI for the WeatherLink Live API.",
-  "main": "index.js",
+  "keywords": [
+    "Davis Instruments", 
+    "WeatherLink v2 API", 
+    "WeatherLink API", 
+    "Weather Link API CLI",
+    "WeatherLink",
+    "WeatherLink CLI",
+    "weather cli"
+  ],
+  "homepage": "https://github.com/mike-weiner/wlbot",
+  "bugs": {
+    "url": "https://github.com/mike-weiner/wlbot/issues",
+    "email": "michael.weiner@hey.com"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Michael Weiner", 
+    "email": "michael.weiner@hey.com",
+    "url": "https://michaelweiner.org"
+  },
+  "type": "module",
+  "main": "./index.js",
   "bin": {
-    "wlbot": "index.js"
+    "wlbot": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mike-weiner/wlbot.git"
   },
   "scripts": {
     "test": "mocha"
   },
-  "keywords": [],
-  "author": "Michael Weiner",
-  "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
-    "chai": "^4.3.6",
     "chalk": "^5.0.1",
     "commander": "^9.4.0",
-    "mocha": "^10.0.0",
     "ora": "^6.1.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
