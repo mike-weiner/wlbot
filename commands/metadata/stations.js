@@ -9,6 +9,10 @@ export default (stationIds, options) => {
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
+    if (spinner) { 
+      spinner.fail('Failed to Retrieve Stations') 
+    }
+
     return console.log(`${chalk.red.bold(`Missing Environment Variable(s):`)} ${envVars.missing.join(", ")}`);
   }
 
