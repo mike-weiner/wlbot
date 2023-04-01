@@ -1,4 +1,4 @@
-import { buildWeatherLinkApiUrl, dateRangeIsValid } from '../lib/utils.js';
+import { buildWeatherLinkApiUrl, checkForRequired, dateRangeIsValid } from '../lib/utils.js';
 import chai from 'chai';
 
 describe('buildWeatherLinkApiUrl', () => {
@@ -37,6 +37,28 @@ describe('buildWeatherLinkApiUrl', () => {
         {'api-key': process.env.WEATHER_LINK_API_KEY, 't': String(1660759608)}
       )
     ).to.equal('https://api.weatherlink.com/v2/stations/13,14,15?api-key=sampleKey&t=1660759608&api-signature=7accbcf70808449f944e5da9e3e06db0aae7362870e7ace8312d5d9e8103d274')
+  });
+});
+
+describe('checkForRequired', () => {
+  
+  beforeEach(() => {
+    // Set the environment variables
+    process.env.WEATHER_LINK_API_KEY = 'sampleKey';
+    process.env.WEATHER_LINK_API_SECRET = 'sampleSecret';
+    process.env.WEATHER_LINK_BASE_API_URL = 'https://api.weatherlink.com/v2/';
+  });
+
+  it('Missing All Env Vars', () => {
+    chai.expect(
+      checkForRequired(["WEATHER_LINK_VERY_FAKE_NONEXISTENT"])
+    ).to.deep.equal({"exist": false, "missing": ["WEATHER_LINK_VERY_FAKE_NONEXISTENT"]})
+  });
+
+  it('All Env Vars Defined', () => {
+    chai.expect(
+      checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
+    ).to.deep.equal({"exist": true, "missing": []})
   });
 });
 
