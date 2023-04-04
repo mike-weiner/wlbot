@@ -5,7 +5,7 @@ import ora from 'ora';
 import { buildWeatherLinkApiUrl, checkForRequired, dateRangeIsValid } from '../../lib/utils.js';
 
 export default (stationId, startTimestamp, endTimestamp, options) => {
-  const spinner = !options.raw ? ora('Retrieving Historical Weather Data').start() : undefined;
+  const spinner = !options.raw && !options.dryRun ? ora('Retrieving Historical Weather Data').start() : undefined;
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
@@ -24,13 +24,17 @@ export default (stationId, startTimestamp, endTimestamp, options) => {
 
   const API_KEY = process.env.WEATHER_LINK_API_KEY;
 
-  axios.get(
-    buildWeatherLinkApiUrl(
-      `historic/${stationId}`,
-      { "api-key": API_KEY, "end-timestamp": endTimestamp, "start-timestamp": startTimestamp, "station-id": String(stationId), "t": String(Math.round(Date.now() / 1000)) },
-      { "api-key": API_KEY, "end-timestamp": endTimestamp, "start-timestamp": startTimestamp, "t": String(Math.round(Date.now() / 1000)) }
-    )
-  )
+  const urlToQuery = buildWeatherLinkApiUrl(
+    `historic/${stationId}`,
+    { "api-key": API_KEY, "end-timestamp": endTimestamp, "start-timestamp": startTimestamp, "station-id": String(stationId), "t": String(Math.round(Date.now() / 1000)) },
+    { "api-key": API_KEY, "end-timestamp": endTimestamp, "start-timestamp": startTimestamp, "t": String(Math.round(Date.now() / 1000)) }
+  );
+
+  if (options.dryRun) {
+    return console.log(urlToQuery);
+  }
+
+  axios.get(urlToQuery)
     .then((response) => {
       if (options.raw) {
         return console.log(JSON.stringify(response.data));
