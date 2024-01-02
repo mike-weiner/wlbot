@@ -1,0 +1,16 @@
+name: Regression Testing
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: npm ci
+      - name: Execute Tests
+        run: npm test
