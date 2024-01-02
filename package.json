@@ -25,11 +25,11 @@
   "type": "module",
   "main": "./index.js",
   "bin": {
-    "wlbot": "./index.js"
+    "wlbot": "index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mike-weiner/wlbot.git"
+    "url": "git+https://github.com/mike-weiner/wlbot.git"
   },
   "scripts": {
     "test": "mocha"
