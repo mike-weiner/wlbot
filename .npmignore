@@ -1,0 +1,12 @@
+*.DS_Store
+.env
+
+node_modules/
+test/
+
+# Ignore Github Repo Configuration
+.github/
+.gitignore
+
+# Ignore NPM Configuration
+.npmignore
