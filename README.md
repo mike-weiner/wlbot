@@ -12,6 +12,7 @@
   - [Install npm Packages](#install-npm-packages)
   - [Installing CLI Globally](#installing-cli-globally)
 - [Calling the CLI](#calling-the-cli)
+- [Upgrading `wlbot` via `npm`](#upgrading-wlbot-via-npm)
 - [Contributing](#contributing)
 - [License](#license)
 - [References](#references)
@@ -95,8 +96,23 @@ There are several commands that you will probably call more frequently than othe
 - `wlbot metadata mine`: This command will return an array of `station-id` numbers for the weather station's that your WeatherLink account has permission to view data for. 
 - `wlbot weather current <station-id>`: This command will return the current weather record for the station whose station id matches `<station-id>`. 
 
+## Upgrading `wlbot` via `npm`
+If you installed `wlbot` via `npm`, you can quickly get an updated version via the command line. 
+
+To see what version of `wlbot` you currently have installed:
+1. Open a command line window and run `wlbot -V`. 
+
+To upgrade your installed version of `wlbot`:
+1. Open a command line window and run `npm update -g wlbot`.
+
+Downloading the upgrade may take a minute or two based on your internet connection.
+
 ## Contributing
-All contributions are welcome! First, search open issues to see if a ticket has already been created for the issue or feature request that you have. If a ticket does not already exist, open an issue to discuss what contributions you would like to make. All contributions should be developed in a `feature/` branch as a PR will be required before any changes are merged into the `main` branch.
+All contributions are welcome! 
+
+First, search open issues to see if a ticket has already been created for the issue or feature request that you have. If a ticket does not already exist, open an issue to discuss what contributions you would like to make. 
+
+**All contributions should be developed in a `feature/` branch off of the `development` branch as a PR will be required before any changes are merged back into the `development` branch.**
 
 ## License
 Distributed under the MIT License. See `LICENSE.txt` for more information.

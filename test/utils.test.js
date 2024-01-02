@@ -1,5 +1,5 @@
 import { buildWeatherLinkApiUrl, checkForRequired, dateRangeIsValid } from '../lib/utils.js';
-import chai from 'chai';
+import { expect } from 'chai';
 
 describe('buildWeatherLinkApiUrl', () => {
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('buildWeatherLinkApiUrl', () => {
   });
 
   it('Endpoint: current/13', () => {
-    chai.expect(
+    expect(
       buildWeatherLinkApiUrl(
         `current/13`, 
         {'api-key': process.env.WEATHER_LINK_API_KEY, 'station-id': String(13), 't': String(1660759469)}, 
@@ -20,7 +20,7 @@ describe('buildWeatherLinkApiUrl', () => {
   });
 
   it('Endpoint: stations', () => {
-    chai.expect(
+    expect(
       buildWeatherLinkApiUrl(
         'stations', 
         {'api-key': process.env.WEATHER_LINK_API_KEY, 't': String(1660757289)}, 
@@ -30,7 +30,7 @@ describe('buildWeatherLinkApiUrl', () => {
   });
 
   it('Endpoint: stations/13,14,15', () => {
-    chai.expect(
+    expect(
       buildWeatherLinkApiUrl(
         `stations/13,14,15`, 
         {'api-key': process.env.WEATHER_LINK_API_KEY, 'station-ids': '13,14,15', 't': String(1660759608)}, 
@@ -50,13 +50,13 @@ describe('checkForRequired', () => {
   });
 
   it('Missing All Env Vars', () => {
-    chai.expect(
+    expect(
       checkForRequired(["WEATHER_LINK_VERY_FAKE_NONEXISTENT"])
     ).to.deep.equal({"exist": false, "missing": ["WEATHER_LINK_VERY_FAKE_NONEXISTENT"]})
   });
 
   it('All Env Vars Defined', () => {
-    chai.expect(
+    expect(
       checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
     ).to.deep.equal({"exist": true, "missing": []})
   });
@@ -65,43 +65,43 @@ describe('checkForRequired', () => {
 describe('dateRangeIsValid', () => {
 
   it('Start Timestamp is Before End Timestamp', () => {
-    chai.expect(
+    expect(
       dateRangeIsValid(1673472399, 1673494000).isValid
     ).to.equal(true)
   });
 
   it('Start Timestamp is the Same as End Timestamp', () => {
-    chai.expect(
+    expect(
       dateRangeIsValid(1673494000, 1673494000).isValid
     ).to.equal(false)
   });
 
   it('Start Timestamp is After End Timestamp', () => {
-    chai.expect(
+    expect(
       dateRangeIsValid(1673494010, 1673494000).isValid
     ).to.equal(false)
   });
 
   it('Start Timestamp is 0', () => {
-    chai.expect(
+    expect(
       dateRangeIsValid(0, 1673494000).isValid
     ).to.equal(false)
   });
 
   it('Start Timestamp is Negative', () => {
-    chai.expect(
+    expect(
       dateRangeIsValid(-10, 1673494000).isValid
     ).to.equal(false)
   });
 
   it('End Timestamp is 0', () => {
-    chai.expect(
+    expect(
       dateRangeIsValid(1673494010, 0).isValid
     ).to.equal(false)
   });
 
   it('End Timestamp is Negative', () => {
-    chai.expect(
+    expect(
       dateRangeIsValid(1673494010, -10).isValid
     ).to.equal(false)
   });

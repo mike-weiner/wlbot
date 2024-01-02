@@ -18,7 +18,7 @@ const program = new Command();
 program
   .description("A CLI for the WeatherLink Live API.")
   .name("wlbot")
-  .version('1.1.3')
+  .version('1.1.4')
   .usage('<command>');
 
 const metadata = program.command("metadata")
@@ -26,17 +26,20 @@ const metadata = program.command("metadata")
 
 metadata.command("catalog")
   .description("Get a catalog of all available sensor types and the data reported by each sensor.")
+  .option("-d, --dry-run", "Checks for the necessary environmental variables and outputs the URL that would be queried.")
   .option("-r, --raw", "Display the raw response from the WeatherLink API.")
   .action(catalog);
 
 metadata.command("mine")
   .description("Returns an array of Weather Station Id(s) that are associated with your WeatherLink API Key.")
+  .option("-d, --dry-run", "Checks for the necessary environmental variables and outputs the URL that would be queried.")
   .option("-r, --raw", "Display the raw response from the WeatherLink API.")
   .action(mine);
 
 metadata.command("stations")
   .description("Returns all available information about 1 or more weather stations associated with your WeatherLink API Key.")
   .argument('<station-ids>', 'A comma-separated list of Weather Station Id(s) that you want information about.')
+  .option("-d, --dry-run", "Checks for the necessary environmental variables and outputs the URL that would be queried.")
   .option("-r, --raw", "Display the raw response from the WeatherLink API.")
   .action(stations);
 
@@ -46,6 +49,7 @@ const weather = program.command("weather")
 weather.command("current")
   .description("Get the current weather data for 1 weather station associated with your WeatherLink API Key.")
   .argument('<station-id>', 'The Station ID of the weather station that you want current weather data for.')
+  .option("-d, --dry-run", "Checks for the necessary environmental variables and outputs the URL that would be queried.")
   .option("-r, --raw", "Display the raw response from the WeatherLink API.")
   .action(current);
 
@@ -54,6 +58,7 @@ weather.command("historic")
   .argument('<station-id>', 'The Station ID of the weather station that you want current weather data for.')
   .argument('<start-timestamp>', 'A Unix timestamp marking the beginning of the historical period (must be earlier than end-timestamp but not more than 24 hours earlier).')
   .argument('<end-timestamp>', 'A Unix timestamp marking the end of the historical period (must be later than start-timestamp but not more than 24 hours later).')
+  .option("-d, --dry-run", "Checks for the necessary environmental variables and outputs the URL that would be queried.")
   .option("-r, --raw", "Display the raw response from the WeatherLink API.")
   .action(historic);
 
