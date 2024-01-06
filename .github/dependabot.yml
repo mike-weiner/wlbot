@@ -1,9 +1,11 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
+    target-branch: "main"
     directory: "/"
     schedule:
-      interval: "daily"
-    target-branch: "main"
+      interval: "weekly"
+    assignees:
+      - "mike-weiner"
     labels:
       - "dependencies"
