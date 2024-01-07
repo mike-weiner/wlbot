@@ -32,6 +32,7 @@
     "url": "git+https://github.com/mike-weiner/wlbot.git"
   },
   "scripts": {
+    "pack:dry": "npm pack --dry-run",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "dependencies": {
