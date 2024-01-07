@@ -41,6 +41,7 @@ export default async (options) => {
     spinner.succeed(chalk.green.bold(`Catalog Retrieved`));
     console.dir(response.data, { depth: null });
     return response;
+    
   } catch (error) {
     if (options.raw) {
       console.log(JSON.stringify(error.response.data));
