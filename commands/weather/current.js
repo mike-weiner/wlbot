@@ -9,7 +9,7 @@ export default async (stationId, options) => {
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
-    if (spinner) { 
+    if (spinner) {
       spinner.fail('Failed to Retrieve Current Weather Data');
     }
 

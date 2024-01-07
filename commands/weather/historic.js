@@ -9,7 +9,7 @@ export default async (stationId, startTimestamp, endTimestamp, options) => {
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
-    if (spinner) { 
+    if (spinner) {
       spinner.fail('Failed to Retrieve Historic Weather Data');
     }
 
@@ -20,7 +20,7 @@ export default async (stationId, startTimestamp, endTimestamp, options) => {
   const resultsOfDateRangeCheck = dateRangeIsValid(startTimestamp, endTimestamp);
 
   if (!resultsOfDateRangeCheck.isValid) {
-    if (spinner) { 
+    if (spinner) {
       spinner.fail(`${resultsOfDateRangeCheck.msg}`);
     }
 
@@ -38,7 +38,7 @@ export default async (stationId, startTimestamp, endTimestamp, options) => {
 
   if (options.dryRun) {
     console.log(urlToQuery);
-    return 
+    return
   }
 
   try {
