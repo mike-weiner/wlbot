@@ -33,8 +33,7 @@
   },
   "scripts": {
     "pack:dry": "npm pack --dry-run",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "test:ci": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx  jest --ci --json --coverage --testLocationInResults --outputFile=report.json"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "dependencies": {
     "axios": "^1.6.3",
