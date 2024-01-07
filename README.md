@@ -114,7 +114,7 @@ First, search open issues to see if a ticket has already been created for the is
 
 **All contributions should be developed in a `feature/` branch off of the `development` branch as a PR will be required before any changes are merged back into the `development` branch.**
 
-If you are introducing new functionality, please add unit tests (UTs) to test the functionality of your contribution. All unit tests should be able to run locally. You will need to install the `devDependencies` to run the UTs.
+If you are introducing new functionality, please add unit tests (UTs) to test your contribution. All unit tests should be able to run locally. You will need to install the `devDependencies` to run the UTs.
 
 ## License
 Distributed under the MIT License. See `LICENSE.txt` for more information.
