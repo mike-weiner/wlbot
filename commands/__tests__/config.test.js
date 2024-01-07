@@ -1,4 +1,4 @@
-import {jest} from '@jest/globals'
+import { jest } from '@jest/globals'
 
 const oraSucceedMock = jest.fn();
 const oraStartMock = jest.fn(() => ({ succeed: oraSucceedMock }));
@@ -13,7 +13,7 @@ const { default: config } = await import('../config.js');
 
 describe('wlbot config', () => {
 
-  const logMock = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logMock = jest.spyOn(console, "log").mockImplementation(() => { });
   const backupEnv = process.env;
 
   beforeEach(() => {
@@ -57,14 +57,14 @@ describe('wlbot config', () => {
       },
     },
   ])
-  ('$name', async ({options, wipeEnvs, expected}) => {
-    if (wipeEnvs) { process.env = {}; }
+    ('$name', async ({ options, wipeEnvs, expected }) => {
+      if (wipeEnvs) { process.env = {}; }
 
-    config(options);
-    
-    expect(oraStartMock).toHaveBeenCalledTimes(1);
-    expect(logMock).toHaveBeenCalled();
-    expect(oraSucceedMock).toHaveBeenCalledTimes(1);
-    expect(logMock).toHaveBeenCalledWith(JSON.stringify(expected, undefined, 2));
-  });
+      config(options);
+
+      expect(oraStartMock).toHaveBeenCalledTimes(1);
+      expect(logMock).toHaveBeenCalled();
+      expect(oraSucceedMock).toHaveBeenCalledTimes(1);
+      expect(logMock).toHaveBeenCalledWith(JSON.stringify(expected, undefined, 2));
+    });
 });
