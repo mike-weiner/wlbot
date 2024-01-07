@@ -4,16 +4,17 @@ import ora from 'ora';
 
 import { buildWeatherLinkApiUrl, checkForRequired } from '../../lib/utils.js';
 
-export default (stationId, options) => {
+export default async (stationId, options) => {
   const spinner = !options.raw && !options.dryRun ? ora('Retrieving Current Weather Data').start() : undefined;
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
     if (spinner) { 
-      spinner.fail('Failed to Retrieve Current Weather Data') 
+      spinner.fail('Failed to Retrieve Current Weather Data');
     }
 
-    return console.log(`${chalk.red.bold(`Missing Environment Variable(s):`)} ${envVars.missing.join(", ")}`);
+    console.log(`${chalk.red.bold(`Missing Environment Variable(s):`)} ${envVars.missing.join(", ")}`);
+    return;
   }
 
   const API_KEY = process.env.WEATHER_LINK_API_KEY;
@@ -25,24 +26,29 @@ export default (stationId, options) => {
   );
 
   if (options.dryRun) {
-    return console.log(urlToQuery);
+    console.log(urlToQuery);
+    return;
   }
 
-  axios.get(urlToQuery)
-    .then((response) => {
-      if (options.raw) {
-        return console.log(JSON.stringify(response.data));
-      }
+  try {
+    const response = await axios.get(urlToQuery);
+    if (options.raw) {
+      console.log(JSON.stringify(response.data));
+      return response;
+    }
 
-      spinner.succeed(chalk.green.bold(`Current Weather Data Retrieved`));
-      return console.dir(response.data, { depth: null })
-    })
-    .catch((error) => {
-      if (options.raw) {
-        return console.log(JSON.stringify(error.response.data));
-      }
+    spinner.succeed(chalk.green.bold(`Current Weather Data Retrieved`));
+    console.dir(response.data, { depth: null });
+    return response;
 
-      spinner.fail('Failed to Retrieve Current Weather Data');
-      return console.log(`${chalk.red.bold(`Error ${error.response.status}:`)} ${error.response.data.message}`);
-    })
+  } catch (error) {
+    if (options.raw) {
+      console.log(JSON.stringify(error.response.data));
+      throw error;
+    }
+
+    spinner.fail('Failed to Retrieve Current Weather Data');
+    console.log(`${chalk.red.bold(`Error ${error.response.status}:`)} ${error.response.data.message}`);
+    throw error;
+  }
 };
