@@ -9,7 +9,7 @@ export default async (stationIds, options) => {
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
-    if (spinner) { 
+    if (spinner) {
       spinner.fail('Failed to Retrieve Stations');
     }
 
@@ -41,12 +41,12 @@ export default async (stationIds, options) => {
     spinner.succeed(chalk.green.bold(`${response.data.stations.length} Station(s) Found`));
     console.dir(response.data, { depth: null });
     return response;
-    
+
   } catch (error) {
 
     if (options.raw) {
       console.log(JSON.stringify(error.response.data));
-      throw(error);
+      throw (error);
     }
 
     spinner.fail('Unable to Find Stations');
