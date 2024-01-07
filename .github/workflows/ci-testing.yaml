@@ -19,13 +19,11 @@ jobs:
         id: findPr
       - name: Install Dependencies
         run: npm ci
-      - name: Execute UTs
-        run: npm run test-ci
-      - name: Report Coverage
+      - name: Execute Tests & Report Coverage w/ Failures
         uses: ArtiomTr/jest-coverage-report-action@v2
-          with:
-            annotations: none
-            custom-title: CI Testing Coverage
-            prnumber: ${{ steps.findPr.outputs.number }}
-            test-script: npm run test:ci
+        with:
+          annotations: failed-tests
+          custom-title: CI Testing Coverage
+          prnumber: ${{ steps.findPr.outputs.number }}
+          test-script: npm run test:ci
             
