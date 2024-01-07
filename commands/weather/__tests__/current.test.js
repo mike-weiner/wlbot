@@ -41,11 +41,9 @@ describe('wlbot weather current', () => {
   });
 
   const mockSuccessfulApiCall = {
-    response: {
-      data: {
-        unit: "test"
-      },
-    }
+    data: {
+      unit: "test"
+    },
   }
 
   const mockFailedApiCall = {
@@ -86,6 +84,7 @@ describe('wlbot weather current', () => {
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(1);
     expect(checkForRequiredMock).toHaveBeenCalledTimes(1);
     expect(dirSpy).toHaveBeenCalledTimes(1);
+    expect(dirSpy).toHaveBeenCalledWith(mockSuccessfulApiCall.data, { depth: null });
     expect(logSpy).toHaveBeenCalledTimes(0);
     expect(oraFailMock).toHaveBeenCalledTimes(0);
     expect(oraStartMock).toHaveBeenCalledTimes(1);
@@ -105,6 +104,7 @@ describe('wlbot weather current', () => {
     expect(checkForRequiredMock).toHaveBeenCalledTimes(1);
     expect(dirSpy).toHaveBeenCalledTimes(0);
     expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(mockSuccessfulApiCall.data));
     expect(oraFailMock).toHaveBeenCalledTimes(0);
     expect(oraStartMock).toHaveBeenCalledTimes(0);
     expect(oraSucceedMock).toHaveBeenCalledTimes(0);
@@ -122,7 +122,8 @@ describe('wlbot weather current', () => {
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(1);
     expect(checkForRequiredMock).toHaveBeenCalledTimes(1);
     expect(dirSpy).toHaveBeenCalledTimes(0);
-    expect(logSpy).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('Error'));
     expect(oraFailMock).toHaveBeenCalledTimes(1);
     expect(oraStartMock).toHaveBeenCalledTimes(1);
     expect(oraSucceedMock).toHaveBeenCalledTimes(0);
@@ -141,6 +142,7 @@ describe('wlbot weather current', () => {
     expect(checkForRequiredMock).toHaveBeenCalledTimes(1);
     expect(dirSpy).toHaveBeenCalledTimes(0);
     expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(mockFailedApiCall.response.data));
     expect(oraFailMock).toHaveBeenCalledTimes(0);
     expect(oraStartMock).toHaveBeenCalledTimes(0);
     expect(oraSucceedMock).toHaveBeenCalledTimes(0);
