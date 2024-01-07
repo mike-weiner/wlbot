@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import ora from 'ora';
 
 export default (options) => {
-  const spinner = !options.raw ? ora('Reading Environment Variables').start() : undefined;
+  const spinner = ora('Reading Environment Variables').start();
 
   let evValues = {
     "WEATHER_LINK_API_KEY": process.env.WEATHER_LINK_API_KEY || "",
@@ -17,5 +17,6 @@ export default (options) => {
   }
 
   spinner.succeed(chalk.green.bold(`Environment Variables Retrieved`));
-  return console.log(JSON.stringify(evValues, undefined, 2))
+  console.log(JSON.stringify(evValues, undefined, 2));
+  return;
 };

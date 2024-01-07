@@ -4,22 +4,28 @@ import ora from 'ora';
 
 import { buildWeatherLinkApiUrl, checkForRequired, dateRangeIsValid } from '../../lib/utils.js';
 
-export default (stationId, startTimestamp, endTimestamp, options) => {
+export default async (stationId, startTimestamp, endTimestamp, options) => {
   const spinner = !options.raw && !options.dryRun ? ora('Retrieving Historical Weather Data').start() : undefined;
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
-    if (spinner) { 
-      spinner.fail('Failed to Retrieve Historic Weather Data') 
+    if (spinner) {
+      spinner.fail('Failed to Retrieve Historic Weather Data');
     }
 
-    return console.log(`${chalk.red.bold(`Missing Environment Variable(s):`)} ${envVars.missing.join(", ")}`);
+    console.log(`${chalk.red.bold(`Missing Environment Variable(s):`)} ${envVars.missing.join(", ")}`);
+    return;
   }
 
   const resultsOfDateRangeCheck = dateRangeIsValid(startTimestamp, endTimestamp);
 
   if (!resultsOfDateRangeCheck.isValid) {
-    return console.log(`${chalk.red.bold(`Error:`)} ${resultsOfDateRangeCheck.msg}`);
+    if (spinner) {
+      spinner.fail(`${resultsOfDateRangeCheck.msg}`);
+    }
+
+    console.log(`${chalk.red.bold(`Error:`)} ${resultsOfDateRangeCheck.msg}`);
+    return;
   }
 
   const API_KEY = process.env.WEATHER_LINK_API_KEY;
@@ -31,24 +37,30 @@ export default (stationId, startTimestamp, endTimestamp, options) => {
   );
 
   if (options.dryRun) {
-    return console.log(urlToQuery);
+    console.log(urlToQuery);
+    return
   }
 
-  axios.get(urlToQuery)
-    .then((response) => {
-      if (options.raw) {
-        return console.log(JSON.stringify(response.data));
-      }
+  try {
+    const response = await axios.get(urlToQuery);
 
-      spinner.succeed(chalk.green.bold(`Historical Weather Data Retrieved`));
-      return console.dir(response.data, { depth: null })
-    })
-    .catch((error) => {
-      if (options.raw) {
-        return console.log(JSON.stringify(error.response.data));
-      }
+    if (options.raw) {
+      console.log(JSON.stringify(response.data));
+      return response;
+    }
 
-      spinner.fail('Failed to Retrieve Historical Weather Data');
-      return console.log(`${chalk.red.bold(`Error ${error.response.status}:`)} ${error.response.data.message}`);
-    })
+    spinner.succeed(chalk.green.bold(`Historical Weather Data Retrieved`));
+    console.dir(response.data, { depth: null });
+    return response;
+
+  } catch (error) {
+    if (options.raw) {
+      console.log(JSON.stringify(error.response.data));
+      throw error;
+    }
+
+    spinner.fail('Failed to Retrieve Historical Weather Data');
+    console.log(`${chalk.red.bold(`Error ${error.response.status}:`)} ${error.response.data.message}`);
+    throw error;
+  }
 };

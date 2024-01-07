@@ -1,8 +1,11 @@
 *.DS_Store
 .env
+jest.config.js
 
+.jest/
+coverage/
 node_modules/
-test/
+**/__tests__
 
 # Ignore Github Repo Configuration
 .github/
