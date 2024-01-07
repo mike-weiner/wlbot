@@ -4,16 +4,17 @@ import ora from 'ora';
 
 import { buildWeatherLinkApiUrl, checkForRequired } from '../../lib/utils.js';
 
-export default (options) => {
+export default async (options) => {
   const spinner = !options.raw && !options.dryRun ? ora('Searching for Stations').start() : undefined;
 
   const envVars = checkForRequired(["WEATHER_LINK_API_KEY", "WEATHER_LINK_API_SECRET", "WEATHER_LINK_BASE_API_URL"])
   if (!envVars.exist) {
-    if (spinner) { 
-      spinner.fail('Failed to Retrieve Stations') 
+    if (spinner) {
+      spinner.fail('Failed to Retrieve Stations');
     }
-    
-    return console.log(`${chalk.red.bold(`Missing Environment Variable(s):`)} ${envVars.missing.join(", ")}`);
+
+    console.log(`${chalk.red.bold(`Missing Environment Variable(s):`)} ${envVars.missing.join(", ")}`);
+    return;
   }
 
   const API_KEY = process.env.WEATHER_LINK_API_KEY;
@@ -25,30 +26,36 @@ export default (options) => {
   );
 
   if (options.dryRun) {
-    return console.log(urlToQuery);
+    console.log(urlToQuery);
+    return;
   }
 
-  axios.get(urlToQuery)
-    .then((response) => {
+  try {
+    const response = await axios.get(urlToQuery);
 
-      if (options.raw) {
-        return console.log(JSON.stringify(response.data));
-      }
+    if (options.raw) {
+      console.log(JSON.stringify(response.data));
+      return;
+    }
 
-      let stationIdList = [];
-      response.data.stations.forEach(station => {
-        stationIdList.push(station.station_id);
-      });
+    let stationIdList = [];
+    response.data.stations.forEach(station => {
+      stationIdList.push(station.station_id);
+    });
 
-      spinner.succeed(chalk.green.bold(`${stationIdList.length} Station(s) Found`));
-      return console.log(stationIdList);
-    })
-    .catch((error) => {
-      if (options.raw) {
-        return console.log(JSON.stringify(error.response.data));
-      }
+    spinner.succeed(chalk.green.bold(`${stationIdList.length} Station(s) Found`));
+    console.dir(stationIdList, { depth: null });
+    return stationIdList;
 
-      spinner.fail('Unable to Find Stations');
-      return console.log(`${chalk.red.bold(`Error ${error.response.status}:`)} ${error.response.data.message}`);
-    })
+  } catch (error) {
+
+    if (options.raw) {
+      console.log(JSON.stringify(error.response.data));
+      throw (error);
+    }
+
+    spinner.fail('Unable to Find Stations');
+    console.log(`${chalk.red.bold(`Error ${error.response.status}:`)} ${error.response.data.message}`);
+    throw (error);
+  }
 };
