@@ -30,9 +30,12 @@ jobs:
           name: ref-lcov.info
           path: ./coverage/lcov.info
 
-  checks:
+  source_branch_coverage:
     runs-on: ubuntu-latest
     needs: base_branch_coverage
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v4
