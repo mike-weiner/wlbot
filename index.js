@@ -70,17 +70,7 @@ program.command("config")
 program.command("status")
   .description("Retrieves the operational status(es) of Davis Instrument's services.")
   .addArgument(new Argument('[service]', 'The Davis Instrument service that you want to obtain the operational status of.').choices(['all', 'api', 'dataingest', 'mobile', 'syscomms', 'website']).default('all'))
-  .action((service, options) => {
-    status(service, options).then((result) => {
-      if (!Array.isArray(result)) {
-        console.log('Error: ' + result.error.msg);
-      } else {
-        result.forEach((requestedService) => {
-          console.log(requestedService.name + ' is ' + requestedService.status + ' (Status Code: ' + requestedService.status_code + ')');
-        });
-      }
-    });
-  });
+  .action(status);
 
 program.commands.sort((a, b) => a._name.localeCompare(b._name));
 program.parse(process.argv);
