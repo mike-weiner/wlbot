@@ -1,4 +1,4 @@
-import { buildWeatherLinkApiUrl, checkForRequired, dateRangeIsValid } from '../utils.js';
+import { buildWeatherLinkApiUrl, checkForRequired, dateRangeIsValid } from '../../lib/utils.js';
 
 describe('buildWeatherLinkApiUrl(...)', () => {
   describe('Correctly Builds WeatherLink API URL', () => {

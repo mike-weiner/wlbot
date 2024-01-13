@@ -9,7 +9,7 @@ jest.unstable_mockModule('ora', () => ({
   })
 }));
 
-const { default: config } = await import('../config.js');
+const { default: config } = await import('../../commands/config.js');
 
 describe('wlbot config', () => {
 

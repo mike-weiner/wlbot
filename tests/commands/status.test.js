@@ -9,7 +9,7 @@ jest.unstable_mockModule('axios', () => ({
 
 const logSpy = jest.spyOn(console, "log").mockImplementation(() => { });
 
-const { default: status } = await import('../status.js');
+const { default: status } = await import('../../commands/status.js');
 
 describe('wlbot config', () => {
   const mockSuccessfulApiCall = {

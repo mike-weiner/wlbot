@@ -25,12 +25,12 @@ jest.unstable_mockModule('../../../lib/utils.js', () => {
   };
 });
 
-const { default: stations } = await import('../stations.js');
+const { default: catalog } = await import('../../../commands/metadata/catalog.js');
 
 const logSpy = jest.spyOn(console, "log").mockImplementation(() => { });
 const dirSpy = jest.spyOn(console, "dir").mockImplementation(() => { });
 
-describe('wlbot metadata stations', () => {
+describe('wlbot metadata catalog', () => {
 
   beforeEach(() => {
     jest.resetModules();
@@ -42,8 +42,7 @@ describe('wlbot metadata stations', () => {
 
   const mockSuccessfulApiCall = {
     data: {
-      stations: [1],
-      unit: "test",
+      unit: "test"
     },
   }
 
@@ -60,7 +59,7 @@ describe('wlbot metadata stations', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await stations(1, { dryRun: true, });
+    await catalog({ dryRun: true, });
 
     expect(axiosGetMock).toHaveBeenCalledTimes(0);
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(1);
@@ -78,7 +77,7 @@ describe('wlbot metadata stations', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(stations(1, {})).resolves.toBe(mockSuccessfulApiCall);
+    await expect(catalog({})).resolves.toBe(mockSuccessfulApiCall);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
@@ -97,7 +96,7 @@ describe('wlbot metadata stations', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(stations(1, { raw: true })).resolves.toBe(mockSuccessfulApiCall);
+    await expect(catalog({ raw: true })).resolves.toBe(mockSuccessfulApiCall);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
@@ -116,7 +115,7 @@ describe('wlbot metadata stations', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(stations(1, {})).rejects.toEqual(mockFailedApiCall);
+    await expect(catalog({})).rejects.toEqual(mockFailedApiCall);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
@@ -135,7 +134,7 @@ describe('wlbot metadata stations', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(stations(1, { raw: true, })).rejects.toEqual(mockFailedApiCall);
+    await expect(catalog({ raw: true, })).rejects.toEqual(mockFailedApiCall);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
@@ -152,7 +151,7 @@ describe('wlbot metadata stations', () => {
   it('Failure: Missing Environment Variables', async () => {
     checkForRequiredMock.mockReturnValue({ exist: false, missing: ['WEATHER_LINK_BASE_API_URL'] });
 
-    await stations(1, {});
+    await catalog({});
 
     expect(axiosGetMock).toHaveBeenCalledTimes(0);
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(0);
@@ -169,7 +168,7 @@ describe('wlbot metadata stations', () => {
   it('Failure: Missing Environment Variables (No Spinner)', async () => {
     checkForRequiredMock.mockReturnValue({ exist: false, missing: ['WEATHER_LINK_BASE_API_URL'] });
 
-    await stations(1, { dryRun: true, raw: true });
+    await catalog({ dryRun: true, raw: true });
 
     expect(axiosGetMock).toHaveBeenCalledTimes(0);
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(0);
