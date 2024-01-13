@@ -25,12 +25,12 @@ jest.unstable_mockModule('../../../lib/utils.js', () => {
   };
 });
 
-const { default: current } = await import('../current.js');
+const { default: mine } = await import('../../../commands/metadata/mine.js');
 
 const logSpy = jest.spyOn(console, "log").mockImplementation(() => { });
 const dirSpy = jest.spyOn(console, "dir").mockImplementation(() => { });
 
-describe('wlbot weather current', () => {
+describe('wlbot metadata mine', () => {
 
   beforeEach(() => {
     jest.resetModules();
@@ -42,7 +42,18 @@ describe('wlbot weather current', () => {
 
   const mockSuccessfulApiCall = {
     data: {
-      unit: "test"
+      stations: [
+        {
+          station_id: 1,
+        },
+        {
+          station_id: 2,
+        },
+        {
+          station_id: 3,
+        },
+      ],
+      unit: "test",
     },
   }
 
@@ -59,7 +70,7 @@ describe('wlbot weather current', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await current(12345, { dryRun: true, });
+    await mine({ dryRun: true, });
 
     expect(axiosGetMock).toHaveBeenCalledTimes(0);
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(1);
@@ -77,14 +88,14 @@ describe('wlbot weather current', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(current(12345, {})).resolves.toBe(mockSuccessfulApiCall);
+    await expect(mine({})).resolves.toStrictEqual([1, 2, 3]);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(1);
     expect(checkForRequiredMock).toHaveBeenCalledTimes(1);
     expect(dirSpy).toHaveBeenCalledTimes(1);
-    expect(dirSpy).toHaveBeenCalledWith(mockSuccessfulApiCall.data, { depth: null });
+    expect(dirSpy).toHaveBeenCalledWith([1, 2, 3], { depth: null });
     expect(logSpy).toHaveBeenCalledTimes(0);
     expect(oraFailMock).toHaveBeenCalledTimes(0);
     expect(oraStartMock).toHaveBeenCalledTimes(1);
@@ -96,7 +107,7 @@ describe('wlbot weather current', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(current(12345, { raw: true })).resolves.toBe(mockSuccessfulApiCall);
+    await expect(mine({ raw: true })).resolves.toBe(undefined);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
@@ -115,7 +126,7 @@ describe('wlbot weather current', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(current(12345, {})).rejects.toEqual(mockFailedApiCall);
+    await expect(mine({})).rejects.toEqual(mockFailedApiCall);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
@@ -134,7 +145,7 @@ describe('wlbot weather current', () => {
     buildWeatherLinkApiUrlMock.mockReturnValue('http://unit.test');
     checkForRequiredMock.mockReturnValue({ exist: true, missing: [] });
 
-    await expect(current(12345, { raw: true, })).rejects.toEqual(mockFailedApiCall);
+    await expect(mine({ raw: true, })).rejects.toEqual(mockFailedApiCall);
 
     expect(axiosGetMock).toHaveBeenCalledTimes(1);
     expect(axiosGetMock).toHaveReturned();
@@ -151,7 +162,7 @@ describe('wlbot weather current', () => {
   it('Failure: Missing Environment Variables', async () => {
     checkForRequiredMock.mockReturnValue({ exist: false, missing: ['WEATHER_LINK_BASE_API_URL'] });
 
-    await current(12345, {});
+    await mine({});
 
     expect(axiosGetMock).toHaveBeenCalledTimes(0);
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(0);
@@ -168,7 +179,7 @@ describe('wlbot weather current', () => {
   it('Failure: Missing Environment Variables (No Spinner)', async () => {
     checkForRequiredMock.mockReturnValue({ exist: false, missing: ['WEATHER_LINK_BASE_API_URL'] });
 
-    await current(12345, { dryRun: true, raw: true });
+    await mine({ dryRun: true, raw: true });
 
     expect(axiosGetMock).toHaveBeenCalledTimes(0);
     expect(buildWeatherLinkApiUrlMock).toHaveBeenCalledTimes(0);
