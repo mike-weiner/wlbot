@@ -25,7 +25,7 @@ jobs:
         run: npm test
 
       - name: Upload Code Coverage for Bash Branch
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ref-lcov.info
           path: ./coverage/lcov.info
@@ -46,7 +46,7 @@ jobs:
           node-version: latest
 
       - name: Download Code Coverage Report from Base Branch
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ref-lcov.info
 
