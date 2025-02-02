@@ -18,7 +18,7 @@ const program = new Command();
 program
   .description("A CLI for the WeatherLink Live API.")
   .name("wlbot")
-  .version('1.2.0')
+  .version('1.2.1')
   .usage('<command>');
 
 const metadata = program.command("metadata")
