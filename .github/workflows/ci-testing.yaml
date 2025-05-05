@@ -7,6 +7,8 @@ on:
 jobs:
   base_branch_coverage:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v4
