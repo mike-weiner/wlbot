@@ -20,7 +20,7 @@ jobs:
       - name: Install Latest Node.js 
         uses: actions/setup-node@v4
         with:
-          node-version: Latest
+          node-version: latest
           registry-url: https://registry.npmjs.org/
 
       - name: Verify GH Release Tag Matches NPM Package Version
