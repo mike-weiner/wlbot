@@ -38,7 +38,7 @@ jobs:
         run: |
           NEW_VERSION=${{ steps.bump_version.outputs.new_version }}
           VERSION_STR=${NEW_VERSION#v}
-          sed -i '' "s/^\([[:space:]]*\)\.version('.*')/\1.version('$VERSION_STR')/" index.js
+          sed -i "s/^\([[:space:]]*\)\.version('.*')/\1.version('$VERSION_STR')/" index.js
 
       - name: Commit Changes and Push Branch
         run: |
@@ -60,9 +60,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           NEW_VERSION=${{ steps.bump_version.outputs.new_version }}
+          VERSION_STR=${NEW_VERSION#v}
           gh pr create \
             --title "Prep for Release of \`$NEW_VERSION\`" \
             --body "This PR has been automatically created to bump the version of the CLI to $NEW_VERSION in preparation for an upcoming release." \
             --base "${{ github.event.repository.default_branch }}" \
             --head "release/$VERSION_STR" \
-            --draft
