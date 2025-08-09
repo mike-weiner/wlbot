@@ -60,6 +60,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           NEW_VERSION=${{ steps.bump_version.outputs.new_version }}
+          VERSION_STR=${NEW_VERSION#v}
           gh pr create \
             --title "Prep for Release of \`$NEW_VERSION\`" \
             --body "This PR has been automatically created to bump the version of the CLI to $NEW_VERSION in preparation for an upcoming release." \
