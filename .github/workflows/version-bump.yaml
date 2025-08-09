@@ -1,0 +1,68 @@
+name: Bump Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version Bump Type (patch, minor, major)'
+        required: false
+        default: 'patch'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Latest Node.js 
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+
+      - name: Bump NPM Package Version
+        id: bump_version
+        run: |
+          VERSION_TYPE="${{ github.event.inputs.version_type }}"
+          NEW_VERSION=$(npm version "$VERSION_TYPE" --no-git-tag-version)
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump index.js Version
+        run: |
+          NEW_VERSION=${{ steps.bump_version.outputs.new_version }}
+          VERSION_STR=${NEW_VERSION#v}
+          sed -i '' "s/^\([[:space:]]*\)\.version('.*')/\1.version('$VERSION_STR')/" index.js
+
+      - name: Commit Changes and Push Branch
+        run: |
+          NEW_VERSION=${{ steps.bump_version.outputs.new_version }}
+          VERSION_STR=${NEW_VERSION#v}
+          BRANCH="release/$VERSION_STR"
+
+          # NOTE(mweiner): https://github.com/actions/checkout/pull/1707
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          git checkout -b "$BRANCH"
+          git add index.js package.json package-lock.json
+          git commit -m "chore: Bump version to $VERSION_STR"
+          git push origin "$BRANCH"
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VERSION=${{ steps.bump_version.outputs.new_version }}
+          gh pr create \
+            --title "Prep for Release of \`$NEW_VERSION\`" \
+            --body "This PR has been automatically created to bump the version of the CLI to $NEW_VERSION in preparation for an upcoming release." \
+            --base "${{ github.event.repository.default_branch }}" \
+            --head "release/$VERSION_STR" \
+            --draft
