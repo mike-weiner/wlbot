@@ -1,0 +1,49 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ github.base_ref }}
+
+      - name: Install Latest Node.js 
+        uses: actions/setup-node@v4
+        with:
+          node-version: Latest
+          registry-url: https://registry.npmjs.org/
+
+      - name: Verify GH Release Tag Matches NPM Package Version
+        id: verify_version
+        run: |
+          TAG="${GITHUB_REF##*/}"
+          TAG_VERSION="${TAG#v}"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "ERROR: GitHub release tag and package.json version do not match!"
+            exit 1
+          fi
+
+      - name: Clean Install Package Dependencies
+        run: npm ci
+
+      - name: Run Unit Tests
+        run: npm test
+
+      - name: Dry-Run Packaging
+        run: npm run pack:dry
+
+      - name: Publish to NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish
