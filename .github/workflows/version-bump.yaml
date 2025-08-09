@@ -66,4 +66,3 @@ jobs:
             --body "This PR has been automatically created to bump the version of the CLI to $NEW_VERSION in preparation for an upcoming release." \
             --base "${{ github.event.repository.default_branch }}" \
             --head "release/$VERSION_STR" \
-            --draft
