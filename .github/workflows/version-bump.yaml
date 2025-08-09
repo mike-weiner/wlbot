@@ -38,7 +38,7 @@ jobs:
         run: |
           NEW_VERSION=${{ steps.bump_version.outputs.new_version }}
           VERSION_STR=${NEW_VERSION#v}
-          sed -i '' "s/^\([[:space:]]*\)\.version('.*')/\1.version('$VERSION_STR')/" index.js
+          sed -i "s/^\([[:space:]]*\)\.version('.*')/\1.version('$VERSION_STR')/" index.js
 
       - name: Commit Changes and Push Branch
         run: |
