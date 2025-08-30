@@ -18,7 +18,7 @@ jobs:
       - name: Use Node.js Latest
         uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: ${{ vars.NODE_VERSION || 'lts' }}
 
       - name: Install Dependencies
         run: npm ci
@@ -45,7 +45,7 @@ jobs:
       - name: Use Node.js Latest
         uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: ${{ vars.NODE_VERSION || 'lts' }}
 
       - name: Download Code Coverage Report from Base Branch
         uses: actions/download-artifact@v4
