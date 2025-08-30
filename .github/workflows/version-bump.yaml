@@ -17,6 +17,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Validate version_type input
+        run: |
+          case "${{ github.event.inputs.version_type }}" in
+            patch|minor|major)
+              ;;
+            *) 
+              echo "Invalid version_type"
+              exit 1 
+              ;;
+          esac
+
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
@@ -25,7 +36,7 @@ jobs:
       - name: Install Latest Node.js 
         uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: ${{ vars.NODE_VERSION || 'lts' }}
 
       - name: Bump NPM Package Version
         id: bump_version
