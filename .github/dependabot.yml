@@ -9,3 +9,8 @@ updates:
       - "mike-weiner"
     labels:
       - "dependencies"
+    groups:
+      jest:
+        patterns:
+          - "jest"
+          - "@types/jest"
