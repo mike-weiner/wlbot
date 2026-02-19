@@ -1,3 +1,4 @@
+import { describe, it, test, expect } from 'vitest';
 import { buildWeatherLinkApiUrl, checkForRequired, dateRangeIsValid } from '../../lib/utils.js';
 
 describe('buildWeatherLinkApiUrl(...)', () => {

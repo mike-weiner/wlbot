@@ -1,25 +1,25 @@
-import { jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-const axiosGetMock = jest.fn();
-jest.unstable_mockModule('axios', () => ({
+const axiosGetMock = vi.fn();
+vi.mock('axios', () => ({
   default: {
     get: axiosGetMock,
   }
 }));
 
-const oraFailMock = jest.fn();
-const oraSucceedMock = jest.fn();
-const oraStartMock = jest.fn(() => ({ fail: oraFailMock, succeed: oraSucceedMock }));
-jest.unstable_mockModule('ora', () => ({
+const oraFailMock = vi.fn();
+const oraSucceedMock = vi.fn();
+const oraStartMock = vi.fn(() => ({ fail: oraFailMock, succeed: oraSucceedMock }));
+vi.mock('ora', () => ({
   default: () => ({
     start: oraStartMock,
   })
 }));
 
-const buildWeatherLinkApiUrlMock = jest.fn();
-const checkForRequiredMock = jest.fn();
-const dateRangeIsValidMock = jest.fn();
-jest.unstable_mockModule('../../../lib/utils.js', () => {
+const buildWeatherLinkApiUrlMock = vi.fn();
+const checkForRequiredMock = vi.fn();
+const dateRangeIsValidMock = vi.fn();
+vi.mock('../../../lib/utils.js', () => {
   return {
     buildWeatherLinkApiUrl: buildWeatherLinkApiUrlMock,
     checkForRequired: checkForRequiredMock,
@@ -29,17 +29,17 @@ jest.unstable_mockModule('../../../lib/utils.js', () => {
 
 const { default: historic } = await import('../../../commands/weather/historic.js');
 
-const logSpy = jest.spyOn(console, "log").mockImplementation(() => { });
-const dirSpy = jest.spyOn(console, "dir").mockImplementation(() => { });
+const logSpy = vi.spyOn(console, "log").mockImplementation(() => { });
+const dirSpy = vi.spyOn(console, "dir").mockImplementation(() => { });
 
 describe('wlbot weather historic', () => {
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   })
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const mockSuccessfulApiCall = {
