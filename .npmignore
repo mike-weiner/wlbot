@@ -1,8 +1,8 @@
 *.DS_Store
 .env
-jest.config.js
+vitest.config.js
 
-.jest/
+.vitest/
 coverage/
 node_modules/
 tests/
