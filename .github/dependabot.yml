@@ -10,7 +10,7 @@ updates:
     labels:
       - "dependencies"
     groups:
-      jest:
+      vitest:
         patterns:
-          - "jest"
-          - "@types/jest"
+          - "vitest"
+          - "@vitest/*"
