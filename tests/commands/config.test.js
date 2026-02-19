@@ -1,9 +1,9 @@
-import { jest } from '@jest/globals'
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 
-const oraSucceedMock = jest.fn();
-const oraStartMock = jest.fn(() => ({ succeed: oraSucceedMock }));
+const oraSucceedMock = vi.fn();
+const oraStartMock = vi.fn(() => ({ succeed: oraSucceedMock }));
 
-jest.unstable_mockModule('ora', () => ({
+vi.mock('ora', () => ({
   default: () => ({
     start: oraStartMock,
   })
@@ -13,15 +13,15 @@ const { default: config } = await import('../../commands/config.js');
 
 describe('wlbot config', () => {
 
-  const logMock = jest.spyOn(console, "log").mockImplementation(() => { });
+  const logMock = vi.spyOn(console, "log").mockImplementation(() => { });
   const backupEnv = process.env;
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   })
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     process.env = backupEnv;
   });
 

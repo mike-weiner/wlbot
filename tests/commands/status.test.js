@@ -1,13 +1,13 @@
-import { jest } from '@jest/globals'
+import { describe, test, expect, beforeEach, afterEach, vi } from 'vitest';
 
-const axiosGetMock = jest.fn();
-jest.unstable_mockModule('axios', () => ({
+const axiosGetMock = vi.fn();
+vi.mock('axios', () => ({
   default: {
     get: axiosGetMock,
   }
 }));
 
-const logSpy = jest.spyOn(console, "log").mockImplementation(() => { });
+const logSpy = vi.spyOn(console, "log").mockImplementation(() => { });
 
 const { default: status } = await import('../../commands/status.js');
 
@@ -41,11 +41,11 @@ describe('wlbot config', () => {
   };
 
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   })
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Successful Return from HostedStatus API', () => {
