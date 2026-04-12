@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: ${{ github.base_ref }}
 
       - name: Install Latest Node.js 
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION || 'lts' }}
           registry-url: https://registry.npmjs.org/
