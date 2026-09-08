@@ -42,8 +42,8 @@
     "ora": "^9.3.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.0.18",
-    "vitest": "^4.0.18"
+    "@vitest/coverage-v8": "^5.0.0",
+    "vitest": "^5.0.0"
   },
   "engines": {
     "node": ">=16"
